@@ -34,6 +34,9 @@ function connectToNewUser(userId, stream) {
     call.on('stream', userVideoStream => {
         addVideoStream(video, userVideoStream)
     });
+    call.on('close', () => {
+        video.remove()
+    })
 }
 
 function addVideoStream(video, stream) {
