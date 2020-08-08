@@ -15,6 +15,17 @@ navigator.mediaDevices.getUserMedia({
 }).then(stream => {
     addVideoStream(myVideo, stream)
 
+    myPeer.on('call', call => {
+        call.answer(stream)
+        const video = document.createElement('video')
+        call.on('stream', userVideoStream => {
+            addVideoStream(video, userVideoStream)
+        });
+        call.on('close', () => {
+            video.remove()
+        })
+    })
+
 
     socket.on('user-connected', userId => {
         connectToNewUser(userId, stream)
